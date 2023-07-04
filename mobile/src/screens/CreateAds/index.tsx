@@ -23,7 +23,11 @@ import {
   ContainerPadding,
   Title,
   Text,
+  ContainerAddPhoto,
   AddPhoto,
+  RemovePhoto,
+  Photo,
+  PreviewPhoto,
   Icon,
   ContainerInputs,
   InputTextArea,
@@ -48,10 +52,13 @@ interface FormData {
 export function CreateAds() {
   const [is_new, setIs_new] = useState(false)
   const [accept_trade, setAccept_trade] = useState(false);
-  const { payment_methods, setPayment_methods, user} = useAuth();
-  const [productImage, setProductImage] = useState<File | undefined>()
+  const [productImage, setProductImage] = useState<File | undefined>();
+  
+  const { payment_methods, setPayment_methods, user } = useAuth();
 
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const [fotos, setFotos] = useState(["gg.png"])
+
+  const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
   const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   function handlePreviewAds() {
@@ -88,6 +95,11 @@ export function CreateAds() {
         } as any;
 
         setProductImage(photoFile)
+        console.log(productImage)
+
+        // console.log("--------------------------")
+         //setFotos(photoFile)
+        // console.log(fotos)
       }
     } catch (error) {
       console.log(error)
@@ -112,6 +124,7 @@ export function CreateAds() {
       })
 
       setPayment_methods([])
+      reset()
       navigation.navigate('home')
 
     } catch (error) {
@@ -140,9 +153,22 @@ export function CreateAds() {
           <Title>Imagens</Title>
           <Text>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível!</Text>
 
-          <AddPhoto onPress={handleOpenGalery}>
-            <Icon name='plus' />
-          </AddPhoto>
+
+
+          <ContainerAddPhoto>
+            {fotos.map((foto, index) => (
+              <PreviewPhoto  key={index}>
+                <Photo source={{uri: foto}}/>
+                <RemovePhoto onPress={() => console.log(index)}></RemovePhoto>
+              </PreviewPhoto>
+            ))} 
+
+
+           <AddPhoto onPress={handleOpenGalery} >
+              <Icon name='plus' />
+            </AddPhoto>
+
+          </ContainerAddPhoto>
 
           <Title>Sobre o produto</Title>
 

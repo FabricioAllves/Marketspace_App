@@ -39,6 +39,11 @@ export const Icon = styled(Feather)`
   font-size: 24px;
 `;
 
+export const ContainerAddPhoto = styled.View`
+  width: 100%;
+  flex-direction: row;
+`;
+
 export const AddPhoto = styled.TouchableOpacity`
   background-color: ${({ theme }) => theme.Colors.GRAY_300};
   align-items: center;
@@ -48,6 +53,36 @@ export const AddPhoto = styled.TouchableOpacity`
   border-radius: 6px;
   margin-top: 16px;
   margin-bottom: 32px;
+  margin-right: 8px;
+`;
+
+export const Photo = styled.Image`
+  background-color: ${({ theme }) => theme.Colors.GRAY_300};
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+`;
+
+export const PreviewPhoto = styled.View`
+  background-color: ${({ theme }) => theme.Colors.GRAY_300};
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  margin-top: 16px;
+  margin-bottom: 32px;
+  margin-right: 8px;
+`;
+
+export const RemovePhoto = styled.TouchableOpacity`
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  position: absolute;
+  top: 0px;
+  right: 0;
 `;
 
 export const ContainerInputs = styled.View`

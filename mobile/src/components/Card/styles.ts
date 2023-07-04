@@ -1,7 +1,10 @@
-import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
-export const Container = styled(TouchableOpacity)`
+type Props = {
+  isNew: boolean;
+}
+
+export const Container = styled.TouchableOpacity`
   flex: 1;
   max-width: 48%;
   height: 150px;
@@ -45,10 +48,10 @@ export const UserPhoto = styled.Image`
   left: 2.5px;
 `;
 
-export const Used = styled.View`
+export const Used = styled.View<Props>`
   border-radius: 9999px;
-  background-color: ${({ theme }) => theme.Colors.blue};
-  width: 43px;
+  background-color: ${({ theme, isNew }) => isNew ? theme.Colors.blue : theme.Colors.GRAY_600};
+  width: 48px;
   height: 17px;
   align-items: center;
   justify-content: center;

@@ -46,8 +46,8 @@ export function Home() {
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleDetailsAnum() {
-    navigate('DetailsAds')
+  function handleDetailsAnum(AdId: string) {
+    navigate('DetailsAds', {AdId})
   }
 
   function handleMyAds() {
@@ -136,7 +136,8 @@ export function Home() {
           keyExtractor={item => String(item.id)}
           renderItem={({ item }) => (
             <Card
-              onPress={handleDetailsAnum} data={item}
+              onPress={() => handleDetailsAnum(item.id)}
+              data={item}
             />
           )}
           numColumns={2}

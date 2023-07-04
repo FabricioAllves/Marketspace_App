@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, View, ScrollView } from 'react-native'
 
 
@@ -28,39 +28,40 @@ import {
 import { HeaderOptions } from '@components/HeaderOptions';
 import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
 import { Button } from '@components/Button';
+import { useRoute } from '@react-navigation/native';
+import { api } from '@services/api';
+import { DetailsAd } from '@dtos/DetailsAd';
+
+type RouteParamsProps = {
+  AdId: string
+}
 
 
 export function DetailsAds() {
-  const [photo, setPhoto] = useState<string[]>([
-    'https://th.bing.com/th/id/R.652c6f323ab35e15f52354de58ed4090?rik=8JtM0Lnr6uRbgw&pid=ImgRaw&r=0',
-    'https://revistabikeup.com.br/wp-content/uploads/2017/01/tonic-fabrications-cyclocross-29er-1.jpg',
-    'https://64.media.tumblr.com/2ab981342a0ea33dbe51566c2cc7017f/tumblr_mh7toopVSx1qcxw6so1_400.jpg',
-  ]);
+  const [adSalesDetails, setAdSalesDetails] = useState<DetailsAd>({} as DetailsAd)
 
-  const [method, setMetho] = useState([
-    {
-      "type": "barcode",
-      "name": "Boleto"
-    },
-    {
-      "type": "product-hunt",
-      "name": "Pix"
-    },
-    {
-      "type": "money",
-      "name": "Dinheiro"
-    },
-    {
-      "type": "credit-card",
-      "name": "Cartão de Credito"
-    },
-    {
-      "type": "university",
-      "name": "Depósito Bancário"
+  const route = useRoute();
+  const { AdId } = route.params as RouteParamsProps;
+
+
+
+  async function fetchAdSalesDeatils() {
+    try {
+      const response = await api.get(`/products/${AdId}`)
+      setAdSalesDetails(response.data)
+      console.log(response.data)
+      console.log(adSalesDetails.payment_methods[1])
+    } catch (error) {
+      console.log(error)
     }
-  ])
+  }
+
+  useEffect(() => {
+    fetchAdSalesDeatils()
+  }, [AdId])
 
   return (
+    <>
     <Container>
       <ContainerPadding>
         <HeaderOptions
@@ -71,9 +72,9 @@ export function DetailsAds() {
 
       <View>
         <FlatList
-          data={photo}
+          data={adSalesDetails && adSalesDetails.product_images}
           renderItem={({ item }) => (
-            <SlidePhotoProduct data={item} />
+            <SlidePhotoProduct data={item.path} />
           )}
           horizontal
           pagingEnabled
@@ -82,56 +83,62 @@ export function DetailsAds() {
 
       <ContainerPadding>
         <HeaderPhotoAndUsername>
-          <UserPhoto source={{ uri: 'https://github.com/FabricioAllves.png' }} />
+          {
+            adSalesDetails && adSalesDetails.user && adSalesDetails.user.avatar && (
+              <UserPhoto source={{ uri: `${api.defaults.baseURL}/images/${adSalesDetails.user.avatar}` }} />
+            )
+          }
           <NameUser>Fabricio</NameUser>
         </HeaderPhotoAndUsername>
 
         <IsNew>
-          <StatusProduct>novo</StatusProduct>
+          <StatusProduct>{adSalesDetails.is_new ? "Novo" : "Usado"}</StatusProduct>
         </IsNew>
 
         <NameProductAndValue>
-          <NameProduct>Bicicleta</NameProduct>
+          <NameProduct>{adSalesDetails.name}</NameProduct>
           <ValueCifrao>R$
-            <ValueProduct>120.00</ValueProduct>
+            <ValueProduct>{adSalesDetails.price}</ValueProduct>
           </ValueCifrao>
         </NameProductAndValue>
 
         <AboutProduct>
-          Cras congue cursus in tortor sagittis placerat nunc, tellus arcu. Vitae ante leo eget maecenas
-          urna mattis cursus. Mauris metus amet nibh mauris mauris accumsan, euismod. Aenean leo nunc, purus iaculis in aliquam.
+          {adSalesDetails.description}
         </AboutProduct>
 
         <TextBold>
           Aceita troca?
-          <TextSimples> Sim</TextSimples>
+          <TextSimples>{adSalesDetails.accept_trade ? "  Sim" : "  Não"}</TextSimples>
         </TextBold>
 
         <PaymentMethod>
           <TextBold>Meios de pagamento:</TextBold>
-          {//Teste
-            method.map(method => (
+          {
+            adSalesDetails && adSalesDetails.payment_methods &&
+            adSalesDetails.payment_methods.map((method) => (
               <MethodsContainer key={method.name}>
-                <IconMethod name={method.type} />
+                <IconMethod name={'money'} />
                 <TextSimples>{method.name}</TextSimples>
               </MethodsContainer>
             ))
           }
+
         </PaymentMethod>
 
       </ContainerPadding>
-      <FooterButton>
-        <ContainerValue>
 
-          <Cifrao>R$
-            <Value>120.00</Value>
-          </Cifrao>
-
-        </ContainerValue>
-
-        <Button text='Entrar em contato' type='BLUE' size='FULL' icon='send' />
-
-      </FooterButton>
     </Container>
+          <FooterButton>
+          <ContainerValue>
+  
+            <Cifrao>R$
+              <Value>{adSalesDetails.price}</Value>
+            </Cifrao>
+  
+          </ContainerValue>
+  
+          <Button text='Entrar em contato' type='BLUE' size='FULL' icon='send' />
+  
+        </FooterButton></>
   );
 }

@@ -14,8 +14,10 @@ import {
   StatusProduct
 } from './styles';
 
-type Props = TouchableOpacityProps & {
+
+type Props = {
   data: ProductAdDTO;
+  onPress: () => void
 }
 
 export function Card({ data, ...rest }: Props) {
@@ -34,8 +36,8 @@ export function Card({ data, ...rest }: Props) {
         source={{ uri: `${api.defaults.baseURL}/images/${data.user.avatar}` }}
       />
 
-      <Used>
-        <StatusProduct>Novo</StatusProduct>
+      <Used isNew={data.is_new}>
+        <StatusProduct>{data.is_new ? "Novo" : "Usado"}</StatusProduct>
       </Used>
     </Container>
   );

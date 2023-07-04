@@ -12,7 +12,7 @@ import { PreviewMyAds } from '@screens/PreviewMyAds';
 
 type AppRoutes = {
   home: undefined;
-  DetailsAds: undefined;
+  DetailsAds: { AdId: string};
   DetailsMyAds: undefined;
   CreateAds: undefined;
   SignOut: undefined;

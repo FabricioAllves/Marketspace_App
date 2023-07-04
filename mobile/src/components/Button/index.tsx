@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '@hooks/useAuth';
 
 import {
   Container,
@@ -16,8 +15,6 @@ type Props = {
 }
 
 export function Button({ text, icon, size, type = 'GRAY', ...rest }: Props) {
-
-
 
   return (
     <Container

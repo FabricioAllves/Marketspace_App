@@ -101,7 +101,7 @@ export const TextSimples =  styled.Text`
 `;
 
 export const PaymentMethod =  styled.View`
-  height: 200px;
+  padding-bottom: 27px;
 `;
 
 export const MethodsContainer = styled.View`
