@@ -148,3 +148,10 @@ export const Cards = styled.View`
   padding: 0 16px;
   margin-top: 14px;
 `;
+
+
+export const ListEmptyContainer = styled.View`
+  height: 150px;
+  justify-content: flex-end;
+  align-items: center;
+`;

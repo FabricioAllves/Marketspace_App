@@ -112,6 +112,7 @@ export function CreateAds() {
       })
 
       setPayment_methods([])
+      navigation.navigate('home')
 
     } catch (error) {
       const isAppError = error instanceof AppError;

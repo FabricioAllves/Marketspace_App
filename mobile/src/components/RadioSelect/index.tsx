@@ -22,7 +22,6 @@ export function RadioSelect() {
       const updatedValues = payment_methods.filter((v) => v !== value);
       setPayment_methods(updatedValues)
       setViewIcon(!ViewIcon)
-      console.log(payment_methods)
 
     } else {
       // Adiciona o valor ao array de valores selecionados
