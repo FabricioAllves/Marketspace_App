@@ -54,10 +54,16 @@ export const TitleForm = styled.Text`
     padding-bottom: 16px;
 `;
 
-export const ContainerPhoto = styled.TouchableOpacity`
+export const ContainerPhoto = styled.View`
     width: 88px;
     height: 88px;
     margin-bottom: 16px;
+`;
+
+export const PhotoUser = styled.View`
+    width: 88px;
+    height: 88px;
+    border-radius: 44px;
 `;
 
 export const PhotoProfile = styled.Image`

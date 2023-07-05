@@ -24,6 +24,7 @@ import {
   SubText,
   Form,
   TitleForm,
+  PhotoUser,
   PhotoProfile,
   ContainerCreateLogin,
   WrapperEdit,
@@ -41,7 +42,7 @@ type FormDataProps = {
 }
 
 export function SignUp() {
-
+  const [viewPhotoSelected, setViewPhotoSelected] = useState()
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormDataProps>()
 
@@ -53,7 +54,7 @@ export function SignUp() {
   }
 
 
-  async function handleSignUp() {
+  async function handleSelectedPhotoUser() {
     try {
       let photoSelected = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images, // tipo de midia
@@ -84,6 +85,7 @@ export function SignUp() {
         } as any;
 
         setPhoto(photoFile)
+        setViewPhotoSelected(photoFile.uri)
 
       }
     } catch (error) {
@@ -122,7 +124,6 @@ export function SignUp() {
       <ContainerLogin>
         <Logo
           source={LogoImg}
-          defaultSource={LogoImg}
         />
 
         <LogoText>
@@ -134,13 +135,27 @@ export function SignUp() {
           itens variados e vender seus produtos
         </SubText>
 
-        <ContainerPhoto onPress={handleSignUp}>
-          <PhotoProfile
-            source={AvatarImg}
-          />
+        <ContainerPhoto>
+          <PhotoUser>
+            {
+              viewPhotoSelected ?
+                (
+                  <PhotoProfile
+                    source={{ uri: viewPhotoSelected }}
+                  />
+                )
+                :
+                (
+                  <PhotoProfile
+                    source={AvatarImg}
+                  />
+                )
+            }
+          </PhotoUser>
 
           <WrapperEdit
             activeOpacity={0.5}
+            onPress={handleSelectedPhotoUser}
           >
             <EditIcon
               name={'edit-3'}

@@ -32,7 +32,7 @@ export function HeaderOptions({ showBackIcon, showEditIcon, nameIcon, text, navi
             <Title>{text}</Title>
 
             {showEditIcon && (
-                <IconWrapperRight onPress={() => navigateCreate === true ? navigation.navigate('CreateAds') : () => navigation.goBack}>
+                <IconWrapperRight onPress={() => navigateCreate === true ? navigation.navigate('CreateAds') : () => navigation.goBack()}>
                     <Icon name={nameIcon} />
                 </IconWrapperRight>
             )}

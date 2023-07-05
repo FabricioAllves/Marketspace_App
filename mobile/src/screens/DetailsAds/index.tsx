@@ -47,6 +47,7 @@ export function DetailsAds() {
 
   async function fetchAdSalesDeatils() {
     try {
+
       const response = await api.get(`/products/${AdId}`)
       setAdSalesDetails(response.data)
       console.log(response.data)
@@ -60,6 +61,7 @@ export function DetailsAds() {
     fetchAdSalesDeatils()
   }, [AdId])
 
+  
   return (
     <>
     <Container>
@@ -91,8 +93,8 @@ export function DetailsAds() {
           <NameUser>Fabricio</NameUser>
         </HeaderPhotoAndUsername>
 
-        <IsNew>
-          <StatusProduct>{adSalesDetails.is_new ? "Novo" : "Usado"}</StatusProduct>
+        <IsNew isNew={adSalesDetails.is_new}>
+          <StatusProduct isNew={adSalesDetails.is_new}>{adSalesDetails.is_new ? "Novo" : "Usado"}</StatusProduct>
         </IsNew>
 
         <NameProductAndValue>

@@ -50,7 +50,7 @@ interface FormData {
 }
 
 export function CreateAds() {
-  const [is_new, setIs_new] = useState(false)
+  const [is_new, setIs_new] = useState(true)
   const [accept_trade, setAccept_trade] = useState(false);
   const [productImage, setProductImage] = useState<File | undefined>();
   
@@ -208,10 +208,10 @@ export function CreateAds() {
 
           <ContainerRadioSelect>
             <RadioOption>
-              <RadioCicle onPress={() => isNew(true)}>
+              <RadioCicle onPress={() => isNew(false)}>
                 {
-                  is_new ?
-                    <IconRadio isTrue={is_new} name='radio-button-off-outline' /> :
+                  !is_new ? 
+                    <IconRadio isTrue={!is_new} name='radio-button-off-outline' /> :
                     <IconRadio name='radio-button-on-outline' />
                 }
               </RadioCicle>
@@ -219,10 +219,10 @@ export function CreateAds() {
             </RadioOption>
 
             <RadioOption>
-              <RadioCicle onPress={() => isNew(false)}>
+              <RadioCicle onPress={() => isNew(true)}>
                 {
-                  !is_new ?
-                    <IconRadio isTrue={!is_new} name='radio-button-off-outline' /> :
+                  is_new ?
+                    <IconRadio isTrue={is_new} name='radio-button-off-outline' /> :
                     <IconRadio name='radio-button-on-outline' />
                 }
               </RadioCicle>

@@ -37,9 +37,10 @@ import {
 import { ModalFilter } from '@components/ModalFilter';
 import { api } from '@services/api';
 import { ProductAdDTO } from '@dtos/ProductAdDTO';
+import { Loading } from '@components/Loading';
 
 export function Home() {
-  const { user } = useAuth();
+  const { user, isLoadingStorageData } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(false)
   const [ads, setAds] = useState<ProductAdDTO[]>([])
@@ -130,27 +131,29 @@ export function Home() {
         </Search>
       </Group>
 
+      {isLoadingStorageData ? <Loading /> :
       <Cards>
-        <FlatList
-          data={ads}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => (
-            <Card
-              onPress={() => handleDetailsAnum(item.id)}
-              data={item}
-            />
-          )}
-          numColumns={2}
-          scrollEnabled={false}
-          onEndReachedThreshold={0.1}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <ListEmptyContainer>
-              <Text>Sem anuncíos para venda no momento😪</Text>
-            </ListEmptyContainer>
-          }
-        />
-      </Cards>
+      <FlatList
+        data={ads}
+        keyExtractor={item => String(item.id)}
+        renderItem={({ item }) => (
+          <Card
+            onPress={() => handleDetailsAnum(item.id)}
+            data={item}
+            photoUser={true}
+          />
+        )}
+        numColumns={2}
+        scrollEnabled={false}
+        onEndReachedThreshold={0.1}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <ListEmptyContainer>
+            <Text>Sem anuncíos para venda no momento😪</Text>
+          </ListEmptyContainer>
+        }
+      />
+    </Cards>}
 
       <Modal visible={modalVisible} animationType='fade' transparent>
         <ModalFilter

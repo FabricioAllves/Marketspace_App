@@ -22,6 +22,7 @@ import {
   ContainerCreateLogin,
   ContainerButton
 } from './styles';
+import { Loading } from '@components/Loading';
 
 type FormData = {
   email: string;
@@ -133,11 +134,17 @@ export function SignIn() {
         </TitleForm>
 
         <ContainerButton>
-          <Button
-            type={'GRAY'}
-            onPress={handleNewAccount}
-            text='Criar uma conta'
-          />
+          {
+            isLoadingStorageData ?
+              (<Loading />) :
+              (
+                <Button
+                  type={'GRAY'}
+                  onPress={handleNewAccount}
+                  text='Criar uma conta'
+                />
+              )
+          }
         </ContainerButton>
       </ContainerCreateLogin>
     </Container>

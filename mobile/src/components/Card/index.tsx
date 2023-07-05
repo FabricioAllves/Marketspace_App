@@ -1,7 +1,6 @@
 import { ProductAdDTO } from '@dtos/ProductAdDTO';
 import { api } from '@services/api';
 import React from 'react';
-import { TouchableOpacityProps } from 'react-native'
 
 import {
   Container,
@@ -17,10 +16,11 @@ import {
 
 type Props = {
   data: ProductAdDTO;
+  photoUser?: boolean;
   onPress: () => void
 }
 
-export function Card({ data, ...rest }: Props) {
+export function Card({ data, photoUser, ...rest }: Props) {
   return (
     <Container activeOpacity={0.7} {...rest}>
       <ImgProduct
@@ -32,9 +32,13 @@ export function Card({ data, ...rest }: Props) {
         <ValueProduct>{data.price}</ValueProduct>
       </Cifrao>
 
-      <UserPhoto
-        source={{ uri: `${api.defaults.baseURL}/images/${data.user.avatar}` }}
-      />
+      {
+        photoUser && (
+          <UserPhoto
+            source={{ uri: `${api.defaults.baseURL}/images/${data.user.avatar}` }}
+          />
+        )
+      }
 
       <Used isNew={data.is_new}>
         <StatusProduct>{data.is_new ? "Novo" : "Usado"}</StatusProduct>

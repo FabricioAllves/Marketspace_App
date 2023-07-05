@@ -59,9 +59,7 @@ export function DetailsMyAds() {
 
   return (
     <Container>
-      <ScrollView
-        
-      >
+      <ScrollView>
 
         <ContainerPadding>
           <HeaderOptions
