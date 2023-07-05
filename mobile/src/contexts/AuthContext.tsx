@@ -97,7 +97,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const userLogged = await storageUserGet();
       const token = await storageTokenGet();
 
-      if (userLogged && token) {
+      if (token && userLogged) {
         userAndTokenUpdate(userLogged, token)
       }
 
@@ -110,7 +110,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   useEffect(() => {
-    //signOut()
     loadData()
   }, [])
 

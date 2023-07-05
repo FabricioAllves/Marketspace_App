@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, set } from 'react-hook-form'
 
 import LogoImg from '@assets/LogoMarketplaceLogin.png'
 
@@ -31,22 +31,25 @@ type FormData = {
 
 
 export function SignIn() {
+  const [isLoading, setIsLoading] = useState(false)
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>()
   const navigation = useNavigation<AuthNavigatorRoutesProps>();
 
-  const { signIn, isLoadingStorageData } = useAuth();
+  const { signIn } = useAuth();
 
 
   async function handleLogin({ email, password }: FormData) {
     try {
+      setIsLoading(true)
       await signIn(email, password)
 
     } catch (error) {
-
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possivel entrar. Tente novamente mais tarde.'
       console.log(title)
+
+      setIsLoading(false)
     }
   }
 
@@ -119,11 +122,15 @@ export function SignIn() {
 
         </Form>
         <ContainerButton>
-          <Button
-            text='Entrar'
-            type={'BLUE'}
-            onPress={handleSubmit(handleLogin)}
-          />
+          {
+            isLoading
+              ? <Loading />
+              : <Button
+                text='Entrar'
+                type={'BLUE'}
+                onPress={handleSubmit(handleLogin)}
+              />
+          }
         </ContainerButton>
 
       </ContainerLogin>
@@ -134,17 +141,11 @@ export function SignIn() {
         </TitleForm>
 
         <ContainerButton>
-          {
-            isLoadingStorageData ?
-              (<Loading />) :
-              (
-                <Button
-                  type={'GRAY'}
-                  onPress={handleNewAccount}
-                  text='Criar uma conta'
-                />
-              )
-          }
+          <Button
+            type={'GRAY'}
+            onPress={handleNewAccount}
+            text='Criar uma conta'
+          />
         </ContainerButton>
       </ContainerCreateLogin>
     </Container>

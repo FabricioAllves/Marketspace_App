@@ -32,6 +32,7 @@ import {
   ContainerPhoto,
   ContainerButton
 } from './styles';
+import { Loading } from '@components/Loading';
 
 type FormDataProps = {
   name: string;
@@ -43,6 +44,7 @@ type FormDataProps = {
 
 export function SignUp() {
   const [viewPhotoSelected, setViewPhotoSelected] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormDataProps>()
 
@@ -105,6 +107,8 @@ export function SignUp() {
     userPhotoUploadFormm.append('password', password);
 
     try {
+      setIsLoading(true)
+
       await api.post('/users', userPhotoUploadFormm, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -116,6 +120,7 @@ export function SignUp() {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possivel criar a conta. Tente novamente mais tarde.'
       console.log(title)
+      setIsLoading(false)
     }
   }
 
@@ -233,11 +238,15 @@ export function SignUp() {
         </Form>
 
         <ContainerButton>
-          <Button
-            text='Criar'
-            type={'BLACK'}
-            onPress={handleSubmit(createUser)}
-          />
+          {
+            isLoading
+              ? <Loading />
+              : <Button
+                text='Criar'
+                type={'BLACK'}
+                onPress={handleSubmit(createUser)}
+              />
+          }
         </ContainerButton>
       </ContainerLogin>
 
@@ -247,11 +256,13 @@ export function SignUp() {
         </TitleForm>
 
         <ContainerButton>
+
           <Button
             text='Ir para login'
             type={'GRAY'}
             onPress={handleGoBack}
           />
+
         </ContainerButton>
       </ContainerCreateLogin>
     </Container>

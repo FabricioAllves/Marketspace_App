@@ -40,15 +40,16 @@ import { ProductAdDTO } from '@dtos/ProductAdDTO';
 import { Loading } from '@components/Loading';
 
 export function Home() {
-  const { user, isLoadingStorageData } = useAuth();
+  const { user } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(false)
   const [ads, setAds] = useState<ProductAdDTO[]>([])
+  const [isLoading, setIsLoading] = useState(false);
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
   function handleDetailsAnum(AdId: string) {
-    navigate('DetailsAds', {AdId})
+    navigate('DetailsAds', { AdId })
   }
 
   function handleMyAds() {
@@ -61,11 +62,14 @@ export function Home() {
 
   async function fetchAds() {
     try {
+      setIsLoading(true)
       const response = await api.get('/products')
       setAds(response.data)
 
     } catch (error) {
       console.log(error)
+    }finally{
+      setIsLoading(false)
     }
   }
 
@@ -131,29 +135,30 @@ export function Home() {
         </Search>
       </Group>
 
-      {isLoadingStorageData ? <Loading /> :
-      <Cards>
-      <FlatList
-        data={ads}
-        keyExtractor={item => String(item.id)}
-        renderItem={({ item }) => (
-          <Card
-            onPress={() => handleDetailsAnum(item.id)}
-            data={item}
-            photoUser={true}
+      {isLoading
+        ? <Loading />
+        : <Cards>
+          <FlatList
+            data={ads}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => (
+              <Card
+                onPress={() => handleDetailsAnum(item.id)}
+                data={item}
+                photoUser={true}
+              />
+            )}
+            numColumns={2}
+            scrollEnabled={false}
+            onEndReachedThreshold={0.1}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <ListEmptyContainer>
+                <Text>Sem anuncíos para venda no momento😪</Text>
+              </ListEmptyContainer>
+            }
           />
-        )}
-        numColumns={2}
-        scrollEnabled={false}
-        onEndReachedThreshold={0.1}
-        showsVerticalScrollIndicator={false}
-        ListEmptyComponent={
-          <ListEmptyContainer>
-            <Text>Sem anuncíos para venda no momento😪</Text>
-          </ListEmptyContainer>
-        }
-      />
-    </Cards>}
+        </Cards>}
 
       <Modal visible={modalVisible} animationType='fade' transparent>
         <ModalFilter
