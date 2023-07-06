@@ -25,9 +25,20 @@ import {
 import { HeaderOptions } from '@components/HeaderOptions';
 import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
 import { Button } from '@components/Button';
+import { useRoute } from '@react-navigation/native';
+import { DetailsAd } from '@dtos/DetailsAd';
+import { api } from '@services/api';
+
+type RouteParamsProps = {
+  Id: string
+}
+
 
 
 export function DetailsMyAds() {
+  const [adSalesDetails, setAdSalesDetails] = useState<DetailsAd>({} as DetailsAd)
+  const [isLoding, setIsLoading] = useState(false)
+
   const [photo, setPhoto] = useState<string[]>([
     'https://th.bing.com/th/id/R.652c6f323ab35e15f52354de58ed4090?rik=8JtM0Lnr6uRbgw&pid=ImgRaw&r=0',
     'https://revistabikeup.com.br/wp-content/uploads/2017/01/tonic-fabrications-cyclocross-29er-1.jpg',
@@ -56,6 +67,29 @@ export function DetailsMyAds() {
       "name": "Depósito Bancário"
     }
   ])
+
+  const route = useRoute();
+  const { Id } = route.params as RouteParamsProps;
+
+  async function fetchAdDetails() {
+    try {
+      setIsLoading(true)
+      const response = await api.get(`/products/${Id}`)
+      setAdSalesDetails(response.data)
+      console.log(response.data)
+
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
+    finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAdDetails()
+  }, [Id])
 
   return (
     <Container>

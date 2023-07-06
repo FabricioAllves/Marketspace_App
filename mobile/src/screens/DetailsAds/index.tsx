@@ -34,7 +34,7 @@ import { DetailsAd } from '@dtos/DetailsAd';
 import { Loading } from '@components/Loading';
 
 type RouteParamsProps = {
-  AdId: string
+  Id: string
 }
 
 
@@ -43,14 +43,14 @@ export function DetailsAds() {
   const [isLoding, setIsLoading] = useState(false)
 
   const route = useRoute();
-  const { AdId } = route.params as RouteParamsProps;
+  const { Id } = route.params as RouteParamsProps;
 
 
 
-  async function fetchAdSalesDeatils() {
+  async function fetchAdSalesDetails() {
     try {
       setIsLoading(true)
-      const response = await api.get(`/products/${AdId}`)
+      const response = await api.get(`/products/${Id}`)
       setAdSalesDetails(response.data)
 
     } catch (error) {
@@ -63,8 +63,8 @@ export function DetailsAds() {
   }
 
   useEffect(() => {
-    fetchAdSalesDeatils()
-  }, [AdId])
+    fetchAdSalesDetails()
+  }, [Id])
 
 
   return (

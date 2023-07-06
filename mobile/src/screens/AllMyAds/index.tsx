@@ -25,6 +25,9 @@ export function AllMyAds() {
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
 
+  function NavigateDetailsMyAd(Id: string){
+    navigate('DetailsMyAds', {Id})
+  }
 
   async function fetchAllMyAds() {
     try {
@@ -72,9 +75,10 @@ export function AllMyAds() {
 
       <FlatList
         data={myAds}
+        keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
           <Card data={item}
-            onPress={() => navigate('DetailsMyAds')}
+            onPress={() => NavigateDetailsMyAd(item.id)}
           />
         )}
         numColumns={2}
