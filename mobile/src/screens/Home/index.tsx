@@ -48,8 +48,8 @@ export function Home() {
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
-  function handleDetailsAnum(AdId: string) {
-    navigate('DetailsAds', { AdId })
+  function handleDetailsAnum(Id: string) {
+    navigate('DetailsAds', { Id })
   }
 
   function handleMyAds() {
