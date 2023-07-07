@@ -36,7 +36,7 @@ type RouteParamsProps = {
 
 
 export function DetailsMyAds() {
-  const [adSalesDetails, setAdSalesDetails] = useState<DetailsAd>({} as DetailsAd)
+  const [adUser, setAdUser] = useState<DetailsAd>({} as DetailsAd)
   const [isLoding, setIsLoading] = useState(false)
 
   const [photo, setPhoto] = useState<string[]>([
@@ -75,7 +75,7 @@ export function DetailsMyAds() {
     try {
       setIsLoading(true)
       const response = await api.get(`/products/${Id}`)
-      setAdSalesDetails(response.data)
+      setAdUser(response.data)
       console.log(response.data)
 
     } catch (error) {
@@ -116,7 +116,7 @@ export function DetailsMyAds() {
         <ContainerPadding>
           <HeaderPhotoAndUsername>
             <UserPhoto source={{ uri: 'https://github.com/FabricioAllves.png' }} />
-            <NameUser>Fabricio</NameUser>
+            <NameUser>gsd</NameUser>
           </HeaderPhotoAndUsername>
 
           <IsNew>
@@ -124,7 +124,7 @@ export function DetailsMyAds() {
           </IsNew>
 
           <NameProductAndValue>
-            <NameProduct>Bicicleta</NameProduct>
+            <NameProduct>fvyj</NameProduct>
             <ValueCifrao>R$
               <ValueProduct>120.00</ValueProduct>
             </ValueCifrao>

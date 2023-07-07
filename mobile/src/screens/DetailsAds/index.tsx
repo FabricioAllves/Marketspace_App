@@ -45,8 +45,6 @@ export function DetailsAds() {
   const route = useRoute();
   const { Id } = route.params as RouteParamsProps;
 
-
-
   async function fetchAdSalesDetails() {
     try {
       setIsLoading(true)
