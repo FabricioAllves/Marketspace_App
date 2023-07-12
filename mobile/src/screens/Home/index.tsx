@@ -77,6 +77,7 @@ export function Home() {
     fetchAds()
   }, [])
 
+
   return (
     <Container>
       <Group>

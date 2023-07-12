@@ -28,22 +28,22 @@ import { Button } from '@components/Button';
 import { useRoute } from '@react-navigation/native';
 import { DetailsAd } from '@dtos/DetailsAd';
 import { api } from '@services/api';
+import { Loading } from '@components/Loading';
 
 type RouteParamsProps = {
   Id: string
 }
 
+type Props = {
+  isNew: boolean;
+}
+
+
 
 
 export function DetailsMyAds() {
   const [adUser, setAdUser] = useState<DetailsAd>({} as DetailsAd)
-  const [isLoding, setIsLoading] = useState(false)
-
-  const [photo, setPhoto] = useState<string[]>([
-    'https://th.bing.com/th/id/R.652c6f323ab35e15f52354de58ed4090?rik=8JtM0Lnr6uRbgw&pid=ImgRaw&r=0',
-    'https://revistabikeup.com.br/wp-content/uploads/2017/01/tonic-fabrications-cyclocross-29er-1.jpg',
-    'https://64.media.tumblr.com/2ab981342a0ea33dbe51566c2cc7017f/tumblr_mh7toopVSx1qcxw6so1_400.jpg',
-  ]);
+  const [isLoading, setIsLoading] = useState(false)
 
   const [method, setMetho] = useState([
     {
@@ -91,6 +91,10 @@ export function DetailsMyAds() {
     fetchAdDetails()
   }, [Id])
 
+  if (isLoading) {
+    return <Loading />
+  }
+
   return (
     <Container>
       <ScrollView>
@@ -105,9 +109,9 @@ export function DetailsMyAds() {
 
         <View>
           <FlatList
-            data={photo}
+            data={adUser.product_images}
             renderItem={({ item }) => (
-              <SlidePhotoProduct data={item} />
+              <SlidePhotoProduct data={item.path} />
             )}
             horizontal
             pagingEnabled
@@ -115,41 +119,47 @@ export function DetailsMyAds() {
         </View>
         <ContainerPadding>
           <HeaderPhotoAndUsername>
-            <UserPhoto source={{ uri: 'https://github.com/FabricioAllves.png' }} />
-            <NameUser>gsd</NameUser>
+            {
+              adUser.user?.avatar && (
+                <UserPhoto source={{ uri: `${api.defaults.baseURL}/images/${adUser.user.avatar}` }} />
+              )
+            }
+            <NameUser>{adUser.user?.name}</NameUser>
           </HeaderPhotoAndUsername>
 
-          <IsNew>
-            <StatusProduct>novo</StatusProduct>
+          <IsNew isNew={adUser.is_new}>
+            <StatusProduct>{adUser.is_new ? "Novo" : "Usado"}</StatusProduct>
           </IsNew>
 
           <NameProductAndValue>
-            <NameProduct>fvyj</NameProduct>
+            <NameProduct>{adUser.name}</NameProduct>
             <ValueCifrao>R$
-              <ValueProduct>120.00</ValueProduct>
+              <ValueProduct>{adUser.price}</ValueProduct>
             </ValueCifrao>
           </NameProductAndValue>
 
           <AboutProduct>
-            Cras congue cursus in tortor sagittis placerat nunc, tellus arcu. Vitae ante leo eget maecenas
-            urna mattis cursus. Mauris metus amet nibh mauris mauris accumsan, euismod. Aenean leo nunc, purus iaculis in aliquam.
+            {adUser.description}
           </AboutProduct>
 
           <TextBold>
             Aceita troca?
-            <TextSimples> Sim</TextSimples>
+            <TextSimples> {adUser.accept_trade ? "Sim" : "Não"}</TextSimples>
           </TextBold>
 
           <PaymentMethod>
             <TextBold>Meios de pagamento:</TextBold>
-            {//Teste
-              method.map(method => (
+
+            {
+              adUser && adUser.payment_methods &&
+              adUser.payment_methods.map((method) => (
                 <MethodsContainer key={method.name}>
-                  <IconMethod name={method.type} />
+                  <IconMethod name={'money'} />
                   <TextSimples>{method.name}</TextSimples>
                 </MethodsContainer>
               ))
             }
+
           </PaymentMethod>
 
         </ContainerPadding>

@@ -81,7 +81,7 @@ export function DetailsAds() {
 
               <View>
                 <FlatList
-                  data={adSalesDetails && adSalesDetails.product_images}
+                  data={adSalesDetails.product_images}
                   renderItem={({ item }) => (
                     <SlidePhotoProduct data={item.path} />
                   )}
@@ -93,7 +93,7 @@ export function DetailsAds() {
               <ContainerPadding>
                 <HeaderPhotoAndUsername>
                   {
-                    adSalesDetails && adSalesDetails.user && adSalesDetails.user.avatar && (
+                    adSalesDetails.user?.avatar && (
                       <UserPhoto source={{ uri: `${api.defaults.baseURL}/images/${adSalesDetails.user.avatar}` }} />
                     )
                   }

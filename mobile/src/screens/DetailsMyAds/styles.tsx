@@ -1,6 +1,12 @@
 import styled from 'styled-components/native';
 import {FontAwesome} from '@expo/vector-icons'
 
+
+type Props = {
+  isNew: boolean;
+}
+
+
 export const Container = styled.ScrollView.attrs(() => ({
   showsVerticalScrollIndicator:false
 }))`
@@ -35,9 +41,9 @@ export const NameUser = styled.Text`
   color: ${({ theme }) => theme.Colors.GRAY_700};
 `;
 
-export const IsNew =  styled.View`
+export const IsNew =  styled.View<Props>`
   border-radius: 9999px;
-  background-color: ${({ theme }) => theme.Colors.GRAY_300};
+  background-color: ${({ theme, isNew }) => isNew ? theme.Colors.blue : theme.Colors.GRAY_600};
   width: 50px;
   height: 20px;
   align-items: center;
@@ -46,7 +52,7 @@ export const IsNew =  styled.View`
 
 export const StatusProduct = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.AA}px;
-  color: ${({ theme }) => theme.Colors.GRAY_600};
+  color: ${({ theme }) => theme.Colors.GRAY_100};
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
   text-transform: uppercase;
 `;
