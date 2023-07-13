@@ -2,9 +2,11 @@
 🚧 **Em desenvolvimento*** 🚧
 
 
-<img alt="Logo1" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img1.png"/>
-<img alt="Logo2" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img2.png"/>
-<img alt="Logo3" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img3.png"/>
+<div>
+ <img alt="Logo1" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img1.png"/>
+ <img alt="Logo2" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img2.png"/>
+ <img alt="Logo3" src="https://github.com/FabricioAllves/Marketspace_App/blob/main/mobile/src/assets/readme/Img3.png"/>
+</div>
 
 
 
