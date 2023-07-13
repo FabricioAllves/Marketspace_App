@@ -24,7 +24,7 @@ export function Card({ data, photoUser, ...rest }: Props) {
   return (
     <Container activeOpacity={0.7} {...rest}>
       <ImgProduct
-        source={{ uri: `${api.defaults.baseURL}/images/${data.product_images[0].path}` }}
+        source={{ uri: `${api.defaults.baseURL}/images/${data.product_images[0]?.path}` }}
       />
 
       <DescriptionProd>{data.name}</DescriptionProd>

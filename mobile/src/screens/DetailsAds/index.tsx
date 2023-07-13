@@ -23,7 +23,7 @@ import {
   FooterButton,
   ContainerValue,
   Cifrao,
-  Value
+  Value,
 } from './styles';
 import { HeaderOptions } from '@components/HeaderOptions';
 import { SlidePhotoProduct } from '@components/SlidePhotoProduct';

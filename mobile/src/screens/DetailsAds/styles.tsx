@@ -144,5 +144,3 @@ export const Value =  styled.Text`
   color: ${({ theme }) => theme.Colors.BLUE_LIGHT};
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
-
-

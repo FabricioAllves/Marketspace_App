@@ -21,6 +21,10 @@ import {
   MethodsContainer,
   IconMethod,
   FooterButton,
+  PhotoProductAnun,
+  Active,
+  Deactivated,
+  Photos
 } from './styles';
 import { HeaderOptions } from '@components/HeaderOptions';
 import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
@@ -126,9 +130,20 @@ export function DetailsMyAds() {
 
         <View>
           <FlatList
-            data={adUser.product_images}
+            data={[adUser]}
             renderItem={({ item }) => (
-              <SlidePhotoProduct data={item.path} />
+              <Photos>
+              <Active>
+                <PhotoProductAnun source={{ uri: `${api.defaults.baseURL}/images/${item.product_images[0]?.path}` }} resizeMode='cover' />
+              </Active>
+
+             {
+              !item.is_active && (
+                <Deactivated />
+              )
+             }
+              
+            </Photos>
             )}
             horizontal
             pagingEnabled
