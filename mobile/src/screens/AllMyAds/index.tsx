@@ -41,7 +41,7 @@ export function AllMyAds() {
   
   useEffect(() => {
     fetchAllMyAds()
-  }, [])
+  }, [myAds])
 
   return (
 

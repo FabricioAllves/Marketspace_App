@@ -25,10 +25,11 @@ import {
 import { HeaderOptions } from '@components/HeaderOptions';
 import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
 import { Button } from '@components/Button';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { DetailsAd } from '@dtos/DetailsAd';
 import { api } from '@services/api';
 import { Loading } from '@components/Loading';
+import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
 type RouteParamsProps = {
   Id: string
@@ -44,6 +45,8 @@ type Props = {
 export function DetailsMyAds() {
   const [adUser, setAdUser] = useState<DetailsAd>({} as DetailsAd)
   const [isLoading, setIsLoading] = useState(false)
+
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>()
 
   const [method, setMetho] = useState([
     {
@@ -76,13 +79,27 @@ export function DetailsMyAds() {
       setIsLoading(true)
       const response = await api.get(`/products/${Id}`)
       setAdUser(response.data)
-      console.log(response.data)
 
     } catch (error) {
       console.log(error)
       setIsLoading(false)
     }
     finally {
+      setIsLoading(false)
+    }
+  }
+
+
+  async function handleRemoveAd() {
+    try {
+      setIsLoading(true)
+      await api.delete(`/products/${Id}`)
+      navigate('AllMyAds')
+
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    } finally {
       setIsLoading(false)
     }
   }
@@ -165,7 +182,7 @@ export function DetailsMyAds() {
         </ContainerPadding>
         <FooterButton>
           <Button text='Desativar anúncio' type='BLACK' size='100' icon='trash' />
-          <Button text='Excluir anúncio' type='GRAY' size='100' icon='power' />
+          <Button text='Excluir anúncio' type='GRAY' size='100' icon='power' onPress={handleRemoveAd} />
         </FooterButton>
       </ScrollView>
     </Container>
