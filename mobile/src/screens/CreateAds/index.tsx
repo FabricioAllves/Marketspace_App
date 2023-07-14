@@ -59,10 +59,11 @@ export function CreateAds() {
   const [fotos, setFotos] = useState(["gg.png"])
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
-  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  const {navigate} = useNavigation<AppNavigatorRoutesProps>();
 
   function handlePreviewAds() {
-    navigation.navigate('PreviewMyAds')
+    navigate('PreviewMyAds')
   }
 
   async function handleOpenGalery() {
@@ -125,7 +126,7 @@ export function CreateAds() {
 
       setPayment_methods([])
       reset()
-      navigation.navigate('home')
+      navigate('AllMyAds')
 
     } catch (error) {
       const isAppError = error instanceof AppError;
@@ -148,6 +149,7 @@ export function CreateAds() {
             showBackIcon={true}
             text='Criar anúncio'
             navigateCreate={false}
+            onPress={() => navigate('AllMyAds')}
           />
 
           <Title>Imagens</Title>
@@ -273,7 +275,7 @@ export function CreateAds() {
           text='Cancelar'
           type='GRAY'
           size='48'
-          onPress={() => navigation.navigate('home')}
+          onPress={() => navigate('home')}
         />
         <Button
           text='Avançar'

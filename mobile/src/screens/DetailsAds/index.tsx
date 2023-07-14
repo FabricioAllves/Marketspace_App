@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, ScrollView } from 'react-native'
+import { FlatList, View } from 'react-native'
 
+import { HeaderOptions } from '@components/HeaderOptions';
+import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
+import { Button } from '@components/Button';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { api } from '@services/api';
+import { DetailsAd } from '@dtos/DetailsAd';
+import { Loading } from '@components/Loading';
 
 import {
   Container,
@@ -25,13 +32,8 @@ import {
   Cifrao,
   Value,
 } from './styles';
-import { HeaderOptions } from '@components/HeaderOptions';
-import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
-import { Button } from '@components/Button';
-import { useRoute } from '@react-navigation/native';
-import { api } from '@services/api';
-import { DetailsAd } from '@dtos/DetailsAd';
-import { Loading } from '@components/Loading';
+import { AppNavigatorRoutesProps } from '@routes/app.routes';
+
 
 type RouteParamsProps = {
   Id: string
@@ -40,7 +42,9 @@ type RouteParamsProps = {
 
 export function DetailsAds() {
   const [adSalesDetails, setAdSalesDetails] = useState<DetailsAd>({} as DetailsAd)
-  const [isLoding, setIsLoading] = useState(false)
+  const [isLoding, setIsLoading] = useState(false);
+
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>()
 
   const route = useRoute();
   const { Id } = route.params as RouteParamsProps;
@@ -76,6 +80,7 @@ export function DetailsAds() {
                 <HeaderOptions
                   showBackIcon={true}
                   nameIcon='edit-3'
+                  onPress={() => navigate('home')}
                 />
               </ContainerPadding>
 

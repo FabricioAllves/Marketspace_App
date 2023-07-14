@@ -3,8 +3,8 @@ import { useNavigation } from '@react-navigation/native'
 
 import {
     Container,
-    IconWrapperLeft,
-    IconWrapperRight,
+    ButtonIconWrapperLeft,
+    ButtonIconWrapperRight,
     Icon,
     Title
 } from './styles';
@@ -16,25 +16,26 @@ type Props = {
     nameIcon?: string
     text?: string;
     navigateCreate?: Boolean;
+    onPress: () => void;
 }
 
-export function HeaderOptions({ showBackIcon, showEditIcon, nameIcon, text, navigateCreate }: Props) {
+export function HeaderOptions({ showBackIcon, showEditIcon, nameIcon, text, navigateCreate, ...rest }: Props) {
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     return (
         <Container>
             {showBackIcon && (
-                <IconWrapperLeft onPress={navigation.goBack}>
+                    <ButtonIconWrapperLeft {...rest}>
                     <Icon name='arrow-left' />
-                </IconWrapperLeft>
+                </ButtonIconWrapperLeft>
             )}
 
             <Title>{text}</Title>
 
             {showEditIcon && (
-                <IconWrapperRight onPress={() => navigateCreate === true ? navigation.navigate('CreateAds') : () => navigation.goBack()}>
+                <ButtonIconWrapperRight onPress={() => navigateCreate === true ? navigation.navigate('CreateAds') : () => navigation.goBack()}>
                     <Icon name={nameIcon} />
-                </IconWrapperRight>
+                </ButtonIconWrapperRight>
             )}
         </Container>
     );

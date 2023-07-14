@@ -140,6 +140,7 @@ export function DetailsMyAds() {
             showBackIcon={true}
             nameIcon='edit-3'
             showEditIcon={true}
+            onPress={() => navigate('AllMyAds')}
           />
         </ContainerPadding>
 

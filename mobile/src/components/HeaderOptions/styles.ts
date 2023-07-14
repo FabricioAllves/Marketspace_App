@@ -11,13 +11,13 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.Colors.GRAY_200};
 `;
 
-export const IconWrapperLeft = styled.TouchableOpacity`
+export const ButtonIconWrapperLeft = styled.TouchableOpacity`
   padding: 8px;
   position: absolute;
   left: 0;
 `;
 
-export const IconWrapperRight = styled.TouchableOpacity`
+export const ButtonIconWrapperRight = styled.TouchableOpacity`
   padding: 8px;
   position: absolute;
   right: 0;

@@ -34,7 +34,6 @@ export function AllMyAds() {
     try {
       const response = await api.get('/users/products')
       setMyAds(response.data)
-      console.log(response.data)
   
     } catch (error) {
       console.log(error)
@@ -54,6 +53,7 @@ export function AllMyAds() {
         showEditIcon={true}
         nameIcon='plus'
         navigateCreate={true}
+        onPress={() => navigate('home')}
       />
 
       <HeaderInfoAndFilter>
