@@ -3,7 +3,6 @@ export type ProductAdDTO = {
     id: string,
     is_new: boolean,
     name: string,
-    is_active: true,
     payment_methods: {
         key: string,
         name: string,

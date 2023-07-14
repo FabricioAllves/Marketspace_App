@@ -25,7 +25,8 @@ type Props = {
   onPress: () => void
 }
 
-export function Card({ data, photoUser, ...rest }: Props) {
+export function CardMyAds({ data, photoUser, ...rest }: Props) {
+  const { user } = useAuth()
 
   return (
     <Container activeOpacity={0.7} {...rest}>
@@ -41,12 +42,32 @@ export function Card({ data, photoUser, ...rest }: Props) {
           <StatusProduct>{data.is_new ? "Novo" : "Usado"}</StatusProduct>
         </Used>
 
+        {
+          !data.is_active ? (
+            <ContainerIsActive>
+              <TextDeactivated>Anúncio desativado</TextDeactivated>
+            </ContainerIsActive>
+          ) : null
+
+        }
+
       </ImgContainer>
 
-      <DescriptionProd>{data.name}</DescriptionProd>
-      <Cifrao>R$
-        <ValueProduct>{data.price}</ValueProduct>
+      <DescriptionProd isActive={data.is_active}>{data.name}</DescriptionProd>
+      <Cifrao isActive={data.is_active}>R$
+        <ValueProduct isActive={data.is_active}>{data.price}</ValueProduct>
       </Cifrao>
+
+      {
+        photoUser && (
+          <UserPhoto
+            source={{ uri: `${api.defaults.baseURL}/images/${data.user.avatar}` }}
+          />
+        )
+      }
+
+
+
 
     </Container>
   );

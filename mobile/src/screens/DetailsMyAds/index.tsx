@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList, ScrollView, View } from 'react-native'
 
 
@@ -24,12 +24,13 @@ import {
   PhotoProductAnun,
   Active,
   Deactivated,
-  Photos
+  Photos,
+  TextDeactivated
 } from './styles';
+
 import { HeaderOptions } from '@components/HeaderOptions';
-import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
 import { Button } from '@components/Button';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native';
 import { DetailsAd } from '@dtos/DetailsAd';
 import { api } from '@services/api';
 import { Loading } from '@components/Loading';
@@ -108,9 +109,23 @@ export function DetailsMyAds() {
     }
   }
 
-  useEffect(() => {
+  async function handleDeactivated() {
+    try {
+      await api.patch(`/products/${Id}`, {
+        is_active: false
+      })
+
+      navigate('AllMyAds')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+  useFocusEffect(useCallback(() => {
     fetchAdDetails()
-  }, [Id])
+  }, [Id]))
 
   if (isLoading) {
     return <Loading />
@@ -133,22 +148,29 @@ export function DetailsMyAds() {
             data={[adUser]}
             renderItem={({ item }) => (
               <Photos>
-              <Active>
-                <PhotoProductAnun source={{ uri: `${api.defaults.baseURL}/images/${item.product_images[0]?.path}` }} resizeMode='cover' />
-              </Active>
+                <Active>
+                  {
+                    item.product_images && (
+                      <PhotoProductAnun source={{ uri: `${api.defaults.baseURL}/images/${item.product_images[0]?.path}` }} resizeMode='cover' />
+                    )
+                  }
+                </Active>
 
-             {
-              !item.is_active && (
-                <Deactivated />
-              )
-             }
-              
-            </Photos>
+                {
+                  !item.is_active && (
+                    <Deactivated>
+                      <TextDeactivated>Anúncio desativado</TextDeactivated>
+                    </Deactivated>
+                  )
+                }
+
+              </Photos>
             )}
             horizontal
             pagingEnabled
           />
         </View>
+
         <ContainerPadding>
           <HeaderPhotoAndUsername>
             {
@@ -196,7 +218,7 @@ export function DetailsMyAds() {
 
         </ContainerPadding>
         <FooterButton>
-          <Button text='Desativar anúncio' type='BLACK' size='100' icon='trash' />
+          <Button text='Desativar anúncio' type='BLACK' size='100' icon='trash' onPress={handleDeactivated} />
           <Button text='Excluir anúncio' type='GRAY' size='100' icon='power' onPress={handleRemoveAd} />
         </FooterButton>
       </ScrollView>

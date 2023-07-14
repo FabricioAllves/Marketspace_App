@@ -3,7 +3,7 @@ export type DetailsAd = {
   created_at: string,
   description: string,
   id: string,
-  is_active: boolean,
+  is_active: true,
   is_new: boolean,
   name: string,
   payment_methods: {

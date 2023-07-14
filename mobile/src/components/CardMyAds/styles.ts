@@ -4,6 +4,10 @@ type Props = {
   isNew: boolean;
 }
 
+type Active = {
+  isActive: boolean
+}
+
 export const Container = styled.TouchableOpacity`
   flex: 1;
   max-width: 48%;
@@ -24,21 +28,21 @@ export const ImgContainer = styled.View`
   border-radius: 6px;
 `;
 
-export const DescriptionProd = styled.Text`
+export const DescriptionProd = styled.Text<Active>`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme }) => theme.Colors.GRAY_600};
+  color: ${({ theme, isActive }) => !isActive ? theme.Colors.GRAY_400 : theme.Colors.GRAY_600};
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
 `;
 
-export const Cifrao = styled.Text`
+export const Cifrao = styled.Text<Active>`
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  color: ${({ theme }) => theme.Colors.GRAY_700};
+  color: ${({ theme, isActive }) => !isActive ? theme.Colors.GRAY_400 : theme.Colors.GRAY_700};
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
 
-export const ValueProduct = styled.Text`
+export const ValueProduct = styled.Text<Active>`
   font-size: ${({ theme }) => theme.FONT_SIZE.MG}px;
-  color: ${({ theme }) => theme.Colors.GRAY_700};
+  color: ${({ theme, isActive }) => !isActive ? theme.Colors.GRAY_400 : theme.Colors.GRAY_700};
   font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
 `;
 

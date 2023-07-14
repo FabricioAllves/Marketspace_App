@@ -38,13 +38,20 @@ export const Deactivated = styled.View`
   height: 280px;
   background-color: rgba(0,0,0, 0.5);
   position: absolute;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TextDeactivated = styled.Text`
+  font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
+  color: ${({ theme }) => theme.Colors.GRAY_100};
+  font-family: ${({ theme }) => theme.FONT_FAMILY.BOLD};
+  text-transform: uppercase;
 `;
 
 export const Active = styled.View`
   width: ${windowWidth}px;
   height: 280px;
-  background-color: red;
-  
 `;
 
 export const HeaderPhotoAndUsername = styled.View`

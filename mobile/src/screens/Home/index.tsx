@@ -38,12 +38,13 @@ import { ModalFilter } from '@components/ModalFilter';
 import { api } from '@services/api';
 import { ProductAdDTO } from '@dtos/ProductAdDTO';
 import { Loading } from '@components/Loading';
+import { DetailsAd } from '@dtos/DetailsAd';
 
 export function Home() {
   const { user } = useAuth();
 
   const [modalVisible, setModalVisible] = useState(false)
-  const [ads, setAds] = useState<ProductAdDTO[]>([])
+  const [ads, setAds] = useState<DetailsAd[]>([])
   const [isLoading, setIsLoading] = useState(false);
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();

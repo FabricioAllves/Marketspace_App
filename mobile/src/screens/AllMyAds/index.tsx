@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import {
   Container,
@@ -11,16 +11,17 @@ import {
 } from './styles';
 
 import { HeaderOptions } from '@components/HeaderOptions';
-import { Card } from '@components/Card';
+import { CardMyAds } from '@components/CardMyAds';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 import { ProductAdDTO } from '@dtos/ProductAdDTO';
 import { api } from '@services/api';
+import { DetailsAd } from '@dtos/DetailsAd';
 
 
 
 export function AllMyAds() {
   const [selected, setSelected] = useState();
-  const [myAds, setMyAds] = useState<ProductAdDTO[]>([]);
+  const [myAds, setMyAds] = useState<DetailsAd[]>([]);
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
@@ -33,15 +34,17 @@ export function AllMyAds() {
     try {
       const response = await api.get('/users/products')
       setMyAds(response.data)
+      console.log(response.data)
   
     } catch (error) {
       console.log(error)
     }
   }
   
-  useEffect(() => {
+
+  useFocusEffect(useCallback(() => {
     fetchAllMyAds()
-  }, [myAds])
+  }, []))
 
   return (
 
@@ -77,7 +80,7 @@ export function AllMyAds() {
         data={myAds}
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
-          <Card data={item}
+          <CardMyAds data={item}
             onPress={() => NavigateDetailsMyAd(item.id)}
           />
         )}
