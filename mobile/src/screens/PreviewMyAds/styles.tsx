@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
 import {FontAwesome} from '@expo/vector-icons'
+import { Dimensions } from 'react-native';
+const windowWidth = Dimensions.get('window').width;
+
 
 export const Container = styled.View`
   flex: 1;
@@ -25,6 +28,11 @@ export const SubTitleHeader = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
   color: ${({ theme }) => theme.Colors.GRAY_100};
+`;
+
+export const PhotosPreviewProducts = styled.Image`
+  width: ${windowWidth}px;
+  height: 280px;
 `;
 
 export const ContainerInfo = styled.View`
@@ -118,7 +126,7 @@ export const TextSimples =  styled.Text`
 `;
 
 export const PaymentMethod =  styled.View`
-  height: 200px;
+  padding-bottom: 30px;
 `;
 
 export const MethodsContainer = styled.View`

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { FlatList, ScrollView, StatusBar, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { useAuth } from '@hooks/useAuth';
 
 import {
   Container,
   Header,
   TitleHeader,
   SubTitleHeader,
+  PhotosPreviewProducts,
   ContainerInfo,
   HeaderPhotoAndUsername,
   UserPhoto,
@@ -25,45 +27,76 @@ import {
   IconMethod,
   ViewButtonOption,
 } from './styles';
-import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
+
 import { Button } from '@components/Button';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import { api } from '@services/api';
+import { AppError } from '@utils/AppError';
+
+
+interface Params {
+  is_new: boolean,
+  accept_trade: boolean,
+  arrayImageProducts: string[],
+
+  name: string,
+  description: string,
+  price: number,
+  photos: string[]
+}
 
 
 export function PreviewMyAds() {
-  const [photo, setPhoto] = useState<string[]>([
-    'https://th.bing.com/th/id/R.652c6f323ab35e15f52354de58ed4090?rik=8JtM0Lnr6uRbgw&pid=ImgRaw&r=0',
-    'https://revistabikeup.com.br/wp-content/uploads/2017/01/tonic-fabrications-cyclocross-29er-1.jpg',
-    'https://64.media.tumblr.com/2ab981342a0ea33dbe51566c2cc7017f/tumblr_mh7toopVSx1qcxw6so1_400.jpg',
-  ]);
 
-  const [method, setMetho] = useState([
-    {
-      "type": "barcode",
-      "name": "Boleto"
-    },
-    {
-      "type": "product-hunt",
-      "name": "Pix"
-    },
-    {
-      "type": "money",
-      "name": "Dinheiro"
-    },
-    {
-      "type": "credit-card",
-      "name": "Cartão de Credito"
-    },
-    {
-      "type": "university",
-      "name": "Depósito Bancário"
-    }
-  ])
+  const {user, setPayment_methods, payment_methods} = useAuth();
 
-  const navigation = useNavigation<AppNavigatorRoutesProps>()
+  const route = useRoute();
+
+  const {
+    is_new,
+    accept_trade,
+    arrayImageProducts,
+    name,
+    description,
+    price,
+    photos
+  } = route.params as Params;
+
+  const {navigate} = useNavigation<AppNavigatorRoutesProps>()
 
   function goBack() {
-    navigation.navigate('CreateAds')
+    navigate('CreateAds')
+  }
+
+
+
+  async function handleConfirmAds() {
+    const userPhotoUploadFormm = new FormData();
+
+    try {
+      const data = await api.post('/products', { name, description, accept_trade, price, is_new, payment_methods })
+
+      userPhotoUploadFormm.append('product_id', data.data.id);
+      if (arrayImageProducts) {
+        userPhotoUploadFormm.append('images', arrayImageProducts[0]);
+        userPhotoUploadFormm.append('images', arrayImageProducts[1]);
+        userPhotoUploadFormm.append('images', arrayImageProducts[2]);
+      }
+
+      await api.post('/products/images', userPhotoUploadFormm, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      setPayment_methods([])
+      navigate('AllMyAds')
+
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+      const title = isAppError ? error.message : 'Não foi possivel criar o produto. Tente novamente mais tarde.'
+      console.log(title)
+    }
   }
 
   return (
@@ -92,9 +125,9 @@ export function PreviewMyAds() {
       >
         <View>
           <FlatList
-            data={photo}
+            data={photos}
             renderItem={({ item }) => (
-              <SlidePhotoProduct data={item} />
+              <PhotosPreviewProducts source={{uri: item}}/>
             )}
             horizontal
             pagingEnabled
@@ -104,37 +137,36 @@ export function PreviewMyAds() {
         <ContainerInfo>
           <HeaderPhotoAndUsername>
             <UserPhoto source={{ uri: 'https://github.com/FabricioAllves.png' }} />
-            <NameUser>Fabricio</NameUser>
+            <NameUser>{user.name}</NameUser>
           </HeaderPhotoAndUsername>
 
           <IsNew>
-            <StatusProduct>novo</StatusProduct>
+            <StatusProduct>{is_new ? "Novo":"Usado"}</StatusProduct>
           </IsNew>
 
           <NameProductAndValue>
-            <NameProduct>Bicicleta</NameProduct>
+            <NameProduct>{name}</NameProduct>
             <ValueCifrao>R$
-              <ValueProduct>120.00</ValueProduct>
+              <ValueProduct>{price}</ValueProduct>
             </ValueCifrao>
           </NameProductAndValue>
 
           <AboutProduct>
-            Cras congue cursus in tortor sagittis placerat nunc, tellus arcu. Vitae ante leo eget maecenas
-            urna mattis cursus. Mauris metus amet nibh mauris mauris accumsan, euismod. Aenean leo nunc, purus iaculis in aliquam.
+           {description}
           </AboutProduct>
 
           <TextBold>
             Aceita troca?
-            <TextSimples> Sim</TextSimples>
+            <TextSimples>{accept_trade ? " Sim" : " Não"}</TextSimples>
           </TextBold>
 
           <PaymentMethod>
             <TextBold>Meios de pagamento:</TextBold>
             {//Teste
-              method.map(method => (
-                <MethodsContainer key={method.name}>
-                  <IconMethod name={method.type} />
-                  <TextSimples>{method.name}</TextSimples>
+              payment_methods.map(method => (
+                <MethodsContainer key={method}>
+                  <IconMethod name={'money'} />
+                  <TextSimples>{method}</TextSimples>
                 </MethodsContainer>
               ))
             }
@@ -156,7 +188,7 @@ export function PreviewMyAds() {
           type='BLACK'
           size='48'
           icon='tag'
-          onPress={() => { }}
+          onPress={handleConfirmAds}
         />
       </ViewButtonOption>
     </Container>

@@ -34,6 +34,7 @@ export function AllMyAds() {
     try {
       const response = await api.get('/users/products')
       setMyAds(response.data)
+
   
     } catch (error) {
       console.log(error)

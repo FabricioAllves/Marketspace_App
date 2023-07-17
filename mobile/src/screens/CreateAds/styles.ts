@@ -76,7 +76,7 @@ export const PreviewPhoto = styled.View`
 `;
 
 export const RemovePhoto = styled.TouchableOpacity`
-  background-color: red;
+  background-color: ${({ theme }) => theme.Colors.GRAY_600};
   width: 20px;
   height: 20px;
   border-radius: 10px;

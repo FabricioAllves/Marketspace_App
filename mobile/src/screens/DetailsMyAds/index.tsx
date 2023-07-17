@@ -122,6 +122,19 @@ export function DetailsMyAds() {
     }
   }
 
+  async function handleActiveAd() {
+    try {
+      await api.patch(`/products/${Id}`, {
+        is_active: true
+      })
+
+      navigate('AllMyAds')
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   useFocusEffect(useCallback(() => {
     fetchAdDetails()
@@ -219,8 +232,12 @@ export function DetailsMyAds() {
 
         </ContainerPadding>
         <FooterButton>
-          <Button text='Desativar anúncio' type='BLACK' size='100' icon='trash' onPress={handleDeactivated} />
-          <Button text='Excluir anúncio' type='GRAY' size='100' icon='power' onPress={handleRemoveAd} />
+          {
+            adUser.is_active 
+            ? <Button text='Desativar anúncio' type='BLACK' size='100' icon='power' onPress={handleDeactivated} />
+            : <Button text='Reativar anúncio' type='BLUE' size='100' icon='power' onPress={handleActiveAd} />
+          }
+          <Button text='Excluir anúncio' type='GRAY' size='100' icon='trash' onPress={handleRemoveAd} />
         </FooterButton>
       </ScrollView>
     </Container>

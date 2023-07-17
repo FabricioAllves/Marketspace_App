@@ -12,10 +12,10 @@ import { HeaderOptions } from '@components/HeaderOptions';
 
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
 
-import { api } from '@services/api';
+
 import { useAuth } from '@hooks/useAuth';
 import { Controller, useForm } from 'react-hook-form'
-import { AppError } from '@utils/AppError';
+
 
 import {
   Container,
@@ -43,6 +43,7 @@ import {
   RadioText,
 } from './styles';
 
+
 interface FormData {
   name: string;
   description: string
@@ -50,20 +51,31 @@ interface FormData {
 }
 
 export function CreateAds() {
-  const [is_new, setIs_new] = useState(true)
-  const [accept_trade, setAccept_trade] = useState(false);
-  const [productImage, setProductImage] = useState<File | undefined>();
-  
-  const { payment_methods, setPayment_methods, user } = useAuth();
 
-  const [fotos, setFotos] = useState(["gg.png"])
+  const [is_new, setIs_new] = useState<boolean>(true)
+  const [accept_trade, setAccept_trade] = useState(false);
+  const [photos, setPhotos] = useState<string[]>([])
+  const [arrayImageProducts, setArrayImageProducts] = useState<string[]>([])
+
+  const {  user, setPayment_methods} = useAuth();
+
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
 
-  const {navigate} = useNavigation<AppNavigatorRoutesProps>();
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
-  function handlePreviewAds() {
-    navigate('PreviewMyAds')
+
+
+  function handlePreviewAds({ name, description, price }: FormData) {
+    navigate('PreviewMyAds', {
+      is_new,
+      accept_trade,
+      arrayImageProducts,
+      name,
+      price,
+      description,
+      photos
+    })
   }
 
   async function handleOpenGalery() {
@@ -72,7 +84,6 @@ export function CreateAds() {
         mediaTypes: ImagePicker.MediaTypeOptions.Images, // tipo de midia
         quality: 1,
         aspect: [4, 4],
-        allowsEditing: true //usuario pode editar a imagem?
       });
 
       if (photoSelected.canceled) {
@@ -95,49 +106,34 @@ export function CreateAds() {
           type: `${photoSelected.assets[0].type}/${fileExtension}`
         } as any;
 
-        setProductImage(photoFile)
-        console.log(productImage)
+        setPhotos([...photos, photoFile.uri])
+        setArrayImageProducts([...arrayImageProducts, photoFile])
+        
 
-        // console.log("--------------------------")
-         //setFotos(photoFile)
-        // console.log(fotos)
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  async function handleConfirmAds({ name, description, price }: FormData) {
-    const userPhotoUploadFormm = new FormData();
-
-    try {
-      const data = await api.post('/products', { name, description, accept_trade, price, is_new, payment_methods })
-
-      userPhotoUploadFormm.append('product_id', data.data.id);
-      if (productImage) {
-        userPhotoUploadFormm.append('images', productImage);
-      }
-
-      await api.post('/products/images', userPhotoUploadFormm, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-
-      setPayment_methods([])
-      reset()
-      navigate('AllMyAds')
-
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-      const title = isAppError ? error.message : 'Não foi possivel criar o produto. Tente novamente mais tarde.'
-      console.log(title)
-    }
+  function handleGoBack(){
+    navigate('AllMyAds')
+    setPhotos([])
+    setPayment_methods([])
+    reset();
   }
+
+
 
   function isNew(status: boolean) {
     setIs_new(!status)
     console.log(status)
+  }
+
+  function handleRemovePhotoDeleted(index: string){
+    const data = photos.filter(item => item != index)
+    setPhotos(data)
+    console.log(arrayImageProducts)
   }
 
   return (
@@ -149,7 +145,7 @@ export function CreateAds() {
             showBackIcon={true}
             text='Criar anúncio'
             navigateCreate={false}
-            onPress={() => navigate('AllMyAds')}
+            onPress={handleGoBack}
           />
 
           <Title>Imagens</Title>
@@ -158,19 +154,21 @@ export function CreateAds() {
 
 
           <ContainerAddPhoto>
-            {fotos.map((foto, index) => (
-              <PreviewPhoto  key={index}>
-                <Photo source={{uri: foto}}/>
-                <RemovePhoto onPress={() => console.log(index)}></RemovePhoto>
+            {photos.map((photo, index) => (
+              <PreviewPhoto key={index}>
+                <Photo source={{ uri: photos[index] }} />
+                <RemovePhoto onPress={() => handleRemovePhotoDeleted(photo)}></RemovePhoto>
               </PreviewPhoto>
-            ))} 
-
-
-           <AddPhoto onPress={handleOpenGalery} >
-              <Icon name='plus' />
-            </AddPhoto>
+            ))}
+            {photos.length === 3 ?
+              null :
+              <AddPhoto onPress={handleOpenGalery} >
+                <Icon name='plus' />
+              </AddPhoto>
+            }
 
           </ContainerAddPhoto>
+
 
           <Title>Sobre o produto</Title>
 
@@ -212,7 +210,7 @@ export function CreateAds() {
             <RadioOption>
               <RadioCicle onPress={() => isNew(false)}>
                 {
-                  !is_new ? 
+                  !is_new ?
                     <IconRadio isTrue={!is_new} name='radio-button-off-outline' /> :
                     <IconRadio name='radio-button-on-outline' />
                 }
@@ -275,13 +273,13 @@ export function CreateAds() {
           text='Cancelar'
           type='GRAY'
           size='48'
-          onPress={() => navigate('home')}
+          onPress={handleGoBack}
         />
         <Button
           text='Avançar'
           type='BLACK'
           size='48'
-          onPress={handleSubmit(handleConfirmAds)}
+          onPress={handleSubmit(handlePreviewAds)}
         />
       </ViewButtonOption>
     </Container>

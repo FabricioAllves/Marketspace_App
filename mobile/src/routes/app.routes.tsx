@@ -12,12 +12,20 @@ import { PreviewMyAds } from '@screens/PreviewMyAds';
 
 type AppRoutes = {
   home: undefined;
-  DetailsAds: { Id: string};
-  DetailsMyAds: { Id: string};
+  DetailsAds: { Id: string };
+  DetailsMyAds: { Id: string };
   CreateAds: undefined;
   SignOut: undefined;
   AllMyAds: undefined;
-  PreviewMyAds: undefined;
+  PreviewMyAds: {
+    is_new: boolean,
+    accept_trade: boolean,
+    arrayImageProducts: string[],
+    photos: string[],
+    name: string,
+    description: string,
+    price: number
+  };
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;

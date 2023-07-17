@@ -23,8 +23,6 @@ export const Deactivated = styled.View`
 export const Active = styled.View`
   width: ${windowWidth}px;
   height: 280px;
-  background-color: red;
-  
 `;
 
 
