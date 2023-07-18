@@ -50,12 +50,18 @@ interface FormData {
   price: number
 }
 
+interface ImageProduct {
+  name: string;
+  uri: string;
+  type: string;
+}
+
 export function CreateAds() {
 
   const [is_new, setIs_new] = useState<boolean>(true)
   const [accept_trade, setAccept_trade] = useState(false);
   const [photos, setPhotos] = useState<string[]>([])
-  const [arrayImageProducts, setArrayImageProducts] = useState<string[]>([])
+  const [arrayImageProducts, setArrayImageProducts] = useState<ImageProduct[]>([])
 
   const {  user, setPayment_methods} = useAuth();
 
@@ -74,7 +80,6 @@ export function CreateAds() {
       name,
       price,
       description,
-      photos
     })
   }
 
@@ -103,10 +108,9 @@ export function CreateAds() {
         const photoFile = {
           name: `${user.name}.${fileExtension}`.toLowerCase(),
           uri: photoSelected.assets[0].uri,
-          type: `${photoSelected.assets[0].type}/${fileExtension}`
+          type: `${photoSelected.assets[0].type}/${fileExtension}`,
         } as any;
 
-        setPhotos([...photos, photoFile.uri])
         setArrayImageProducts([...arrayImageProducts, photoFile])
         
 
@@ -120,6 +124,7 @@ export function CreateAds() {
     navigate('AllMyAds')
     setPhotos([])
     setPayment_methods([])
+    setArrayImageProducts([])
     reset();
   }
 
@@ -130,9 +135,9 @@ export function CreateAds() {
     console.log(status)
   }
 
-  function handleRemovePhotoDeleted(index: string){
-    const data = photos.filter(item => item != index)
-    setPhotos(data)
+  function handleRemovePhotoDeleted(index: ImageProduct){
+    const data = arrayImageProducts.filter(item => item != index)
+    setArrayImageProducts(data)
     console.log(arrayImageProducts)
   }
 
@@ -154,13 +159,13 @@ export function CreateAds() {
 
 
           <ContainerAddPhoto>
-            {photos.map((photo, index) => (
+            {arrayImageProducts.map((photo, index) => (
               <PreviewPhoto key={index}>
-                <Photo source={{ uri: photos[index] }} />
+                <Photo source={{ uri: arrayImageProducts[index].uri }} />
                 <RemovePhoto onPress={() => handleRemovePhotoDeleted(photo)}></RemovePhoto>
               </PreviewPhoto>
             ))}
-            {photos.length === 3 ?
+            {arrayImageProducts.length === 3 ?
               null :
               <AddPhoto onPress={handleOpenGalery} >
                 <Icon name='plus' />

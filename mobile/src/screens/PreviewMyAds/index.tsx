@@ -37,8 +37,7 @@ import { AppError } from '@utils/AppError';
 interface Params {
   is_new: boolean,
   accept_trade: boolean,
-  arrayImageProducts: string[],
-
+  arrayImageProducts: string,
   name: string,
   description: string,
   price: number,
@@ -59,7 +58,6 @@ export function PreviewMyAds() {
     name,
     description,
     price,
-    photos
   } = route.params as Params;
 
   const {navigate} = useNavigation<AppNavigatorRoutesProps>()
@@ -68,10 +66,9 @@ export function PreviewMyAds() {
     navigate('CreateAds')
   }
 
-
-
   async function handleConfirmAds() {
     const userPhotoUploadFormm = new FormData();
+
 
     try {
       const data = await api.post('/products', { name, description, accept_trade, price, is_new, payment_methods })
@@ -125,9 +122,9 @@ export function PreviewMyAds() {
       >
         <View>
           <FlatList
-            data={photos}
+            data={arrayImageProducts}
             renderItem={({ item }) => (
-              <PhotosPreviewProducts source={{uri: item}}/>
+              <PhotosPreviewProducts source={{uri: item.uri}}/>
             )}
             horizontal
             pagingEnabled

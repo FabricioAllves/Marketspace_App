@@ -12,6 +12,7 @@ export type DetailsAd = {
   }[]
   price: number,
   product_images: {
+    product_images: any
     id: string,
     path: string,
   }[]

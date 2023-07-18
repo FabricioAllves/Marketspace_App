@@ -35,6 +35,7 @@ import { DetailsAd } from '@dtos/DetailsAd';
 import { api } from '@services/api';
 import { Loading } from '@components/Loading';
 import { AppNavigatorRoutesProps } from '@routes/app.routes';
+import { SlidePhotoProduct } from '@components/SlidePhotoProduct';
 
 type RouteParamsProps = {
   Id: string
@@ -52,29 +53,6 @@ export function DetailsMyAds() {
   const [isLoading, setIsLoading] = useState(false)
 
   const { navigate } = useNavigation<AppNavigatorRoutesProps>()
-
-  const [method, setMetho] = useState([
-    {
-      "type": "barcode",
-      "name": "Boleto"
-    },
-    {
-      "type": "product-hunt",
-      "name": "Pix"
-    },
-    {
-      "type": "money",
-      "name": "Dinheiro"
-    },
-    {
-      "type": "credit-card",
-      "name": "Cartão de Credito"
-    },
-    {
-      "type": "university",
-      "name": "Depósito Bancário"
-    }
-  ])
 
   const route = useRoute();
   const { Id } = route.params as RouteParamsProps;
@@ -165,7 +143,7 @@ export function DetailsMyAds() {
                 <Active>
                   {
                     item.product_images && (
-                      <PhotoProductAnun source={{ uri: `${api.defaults.baseURL}/images/${item.product_images[0]?.path}` }} resizeMode='cover' />
+                      <SlidePhotoProduct data={item.product_images[0]?.path}/>
                     )
                   }
                 </Active>
@@ -233,9 +211,9 @@ export function DetailsMyAds() {
         </ContainerPadding>
         <FooterButton>
           {
-            adUser.is_active 
-            ? <Button text='Desativar anúncio' type='BLACK' size='100' icon='power' onPress={handleDeactivated} />
-            : <Button text='Reativar anúncio' type='BLUE' size='100' icon='power' onPress={handleActiveAd} />
+            adUser.is_active
+              ? <Button text='Desativar anúncio' type='BLACK' size='100' icon='power' onPress={handleDeactivated} />
+              : <Button text='Reativar anúncio' type='BLUE' size='100' icon='power' onPress={handleActiveAd} />
           }
           <Button text='Excluir anúncio' type='GRAY' size='100' icon='trash' onPress={handleRemoveAd} />
         </FooterButton>

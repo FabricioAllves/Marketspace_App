@@ -20,8 +20,11 @@ type AppRoutes = {
   PreviewMyAds: {
     is_new: boolean,
     accept_trade: boolean,
-    arrayImageProducts: string[],
-    photos: string[],
+    arrayImageProducts: {
+      name: string;
+      uri: string;
+      type: string;
+    }[],
     name: string,
     description: string,
     price: number
