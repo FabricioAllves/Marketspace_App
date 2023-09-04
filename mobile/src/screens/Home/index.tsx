@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 
 import { Button } from '@components/Button';
 import { Card } from '@components/Card';
-import { AppNavigatorRoutesProps } from '@routes/app.routes'
+
 import { useAuth } from '@hooks/useAuth';
 
 import {
@@ -39,6 +39,7 @@ import { api } from '@services/api';
 import { ProductAdDTO } from '@dtos/ProductAdDTO';
 import { Loading } from '@components/Loading';
 import { DetailsAd } from '@dtos/DetailsAd';
+import { StackNavigatorRoutesProps } from '@routes/app.stack.routes';
 
 export function Home() {
   const { user } = useAuth();
@@ -47,10 +48,11 @@ export function Home() {
   const [ads, setAds] = useState<DetailsAd[]>([])
   const [isLoading, setIsLoading] = useState(false);
 
-  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+
+  const { navigate } = useNavigation<StackNavigatorRoutesProps>();
 
   function handleDetailsAnum(Id: string) {
-    navigate('DetailsAds', { Id })
+    navigate('detailsAds', { Id })
   }
 
   function handleMyAds() {

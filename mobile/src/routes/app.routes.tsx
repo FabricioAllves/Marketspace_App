@@ -3,37 +3,19 @@ import { Feather } from '@expo/vector-icons'
 import { useTheme } from "styled-components";
 
 import { Home } from '@screens/Home';
-import { DetailsAds } from '@screens/DetailsAds';
 import { SignOut } from '@screens/SignOut';
 import { AllMyAds } from '@screens/AllMyAds';
-import { DetailsMyAds } from '@screens/DetailsMyAds';
-import { CreateAds } from '@screens/CreateAds';
-import { PreviewMyAds } from '@screens/PreviewMyAds';
 
-type AppRoutes = {
-  home: undefined;
-  DetailsAds: { Id: string };
-  DetailsMyAds: { Id: string };
-  CreateAds: undefined;
-  SignOut: undefined;
-  AllMyAds: undefined;
-  PreviewMyAds: {
-    is_new: boolean,
-    accept_trade: boolean,
-    arrayImageProducts: {
-      name: string;
-      uri: string;
-      type: string;
-    }[],
-    name: string,
-    description: string,
-    price: number
-  };
-}
 
-export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
+// type AppRoutes = {
+//   home: undefined;
+//   SignOut: undefined;
+//   AllMyAds: undefined;
+// }
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
+// export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>;
+
+const { Navigator, Screen } = createBottomTabNavigator();
 
 export function AppRoutes() {
   const theme = useTheme()
@@ -84,42 +66,6 @@ export function AppRoutes() {
               color={theme.Colors.RED_LIGHT}
             />
           )
-        }}
-      />
-
-      <Screen
-        name='DetailsAds'
-        component={DetailsAds}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' }
-        }}
-      />
-
-      <Screen
-        name='PreviewMyAds'
-        component={PreviewMyAds}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' }
-        }}
-      />
-
-      <Screen
-        name='DetailsMyAds'
-        component={DetailsMyAds}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' }
-        }}
-      />
-
-      <Screen
-        name='CreateAds'
-        component={CreateAds}
-        options={{
-          tabBarButton: () => null,
-          tabBarStyle: { display: 'none' }
         }}
       />
 

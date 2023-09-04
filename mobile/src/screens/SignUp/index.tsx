@@ -119,7 +119,7 @@ export function SignUp() {
     } catch (error) {
       const isAppError = error instanceof AppError;
       const title = isAppError ? error.message : 'Não foi possivel criar a conta. Tente novamente mais tarde.'
-      console.log(title)
+      console.log("Alert:" + title)
       setIsLoading(false)
     }
   }

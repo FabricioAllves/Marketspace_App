@@ -10,7 +10,7 @@ import { Button } from '@components/Button';
 import { RadioSelect } from '@components/RadioSelect';
 import { HeaderOptions } from '@components/HeaderOptions';
 
-import { AppNavigatorRoutesProps } from '@routes/app.routes';
+
 
 
 import { useAuth } from '@hooks/useAuth';
@@ -42,6 +42,7 @@ import {
   IconRadio,
   RadioText,
 } from './styles';
+import { StackNavigatorRoutesProps } from '@routes/app.stack.routes';
 
 
 interface FormData {
@@ -68,12 +69,10 @@ export function CreateAds() {
 
   const { control, handleSubmit, reset, formState: { errors } } = useForm<FormData>();
 
-  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
-
-
+  const navigation = useNavigation<StackNavigatorRoutesProps>();
 
   function handlePreviewAds({ name, description, price }: FormData) {
-    navigate('PreviewMyAds', {
+    navigation.navigate('PreviewMyAds', {
       is_new,
       accept_trade,
       arrayImageProducts,
@@ -121,7 +120,7 @@ export function CreateAds() {
   }
 
   function handleGoBack(){
-    navigate('AllMyAds')
+    navigation.goBack()
     setPhotos([])
     setPayment_methods([])
     setArrayImageProducts([])

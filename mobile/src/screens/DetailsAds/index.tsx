@@ -32,19 +32,17 @@ import {
   Cifrao,
   Value,
 } from './styles';
-import { AppNavigatorRoutesProps } from '@routes/app.routes';
-
+import { StackNavigatorRoutesProps } from '@routes/app.stack.routes';
 
 type RouteParamsProps = {
   Id: string
 }
 
-
 export function DetailsAds() {
   const [adSalesDetails, setAdSalesDetails] = useState<DetailsAd>({} as DetailsAd)
   const [isLoding, setIsLoading] = useState(false);
 
-  const { navigate } = useNavigation<AppNavigatorRoutesProps>()
+  const { navigate } = useNavigation<StackNavigatorRoutesProps>()
 
   const route = useRoute();
   const { Id } = route.params as RouteParamsProps;
@@ -68,7 +66,6 @@ export function DetailsAds() {
     fetchAdSalesDetails()
   }, [Id])
 
-
   return (
     <>
       {
@@ -80,7 +77,7 @@ export function DetailsAds() {
                 <HeaderOptions
                   showBackIcon={true}
                   nameIcon='edit-3'
-                  onPress={() => navigate('home')}
+                  onPress={() => navigate('Home')}
                 />
               </ContainerPadding>
 
